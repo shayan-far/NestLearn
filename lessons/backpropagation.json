@@ -1,0 +1,63 @@
+{
+  "title": "Backpropagation: how the gradient gets computed",
+  "order": 90,
+  "description": "Follows on from gradient descent: how a network works out which weights to blame for an error.",
+  "subject": "Machine learning",
+  "segments": [
+    {
+      "id": "s1",
+      "title": "The blame problem",
+      "body": "Gradient descent needs the slope of the loss for every weight. A network can have millions of weights spread across many layers, and a weight deep inside only affects the loss through everything after it.\n\nBackpropagation is the bookkeeping method that answers, for every weight at once: how much did you contribute to this error?",
+      "alternatives": {
+        "rephrase": "We need to know how each weight affected the mistake. Backprop works that out for all weights in one sweep.",
+        "analogy": "A relay team loses by two seconds. Backprop is the coach replaying the race backwards to see how much each runner's leg added to the gap.",
+        "example": "A tiny network: input -> weight w1 -> hidden -> weight w2 -> output. Changing w1 changes the hidden value, which changes the output, which changes the loss. Backprop follows that chain in reverse."
+      },
+      "sim_difficulty": 0.2
+    },
+    {
+      "id": "s2",
+      "title": "The chain rule",
+      "body": "If y depends on h and h depends on w, then the effect of w on y is the effect of w on h times the effect of h on y. In symbols: dy/dw = dy/dh x dh/dw.\n\nA network is a long chain of these steps, so the effect of an early weight on the loss is a product of local slopes, one per layer it passes through.",
+      "alternatives": {
+        "rephrase": "To see how a change at the start affects the end, multiply how much each step passes the change along.",
+        "analogy": "Gears: if gear A turns gear B twice as fast, and B turns C three times as fast, then A turns C six times as fast. Multiply the ratios.",
+        "example": "h = 3w and y = h^2. At w = 1, h = 3. dh/dw = 3 and dy/dh = 2h = 6, so dy/dw = 6 x 3 = 18."
+      },
+      "quiz": {
+        "question": "h = 2w and y = 5h. What is dy/dw?",
+        "options": [
+          "7",
+          "10",
+          "2.5"
+        ],
+        "answer": 1
+      },
+      "sim_difficulty": 0.75
+    },
+    {
+      "id": "s3",
+      "title": "Going backwards",
+      "body": "Backprop runs the network forward once to get the prediction and the loss, keeping every intermediate value. Then it starts at the loss and walks back layer by layer, multiplying by each layer's local slope.\n\nEach layer reuses the result from the layer after it, so nothing is computed twice. That reuse is why backprop costs about the same as one extra forward pass, instead of one pass per weight.",
+      "sim_difficulty": 0.8
+    },
+    {
+      "id": "s4",
+      "title": "Vanishing and exploding gradients",
+      "body": "Because the gradient of an early layer is a product of many local slopes, it can shrink toward zero when those slopes are small, or blow up when they are large.\n\nWhen it vanishes, early layers barely learn. When it explodes, updates become wild. Careful initialisation, activation functions like ReLU, normalisation and skip connections all exist largely to keep this product well behaved.",
+      "alternatives": {
+        "analogy": "A whisper passed down a long line of people fades to nothing, while a shout amplified at every step becomes deafening. Deep networks pass gradients down a line like that."
+      },
+      "quiz": {
+        "question": "Why can gradients vanish in a deep network?",
+        "options": [
+          "The loss becomes zero",
+          "They are a product of many small local slopes",
+          "Backprop skips the early layers"
+        ],
+        "answer": 1
+      },
+      "sim_difficulty": 0.55
+    }
+  ]
+}

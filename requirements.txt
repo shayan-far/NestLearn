@@ -1,0 +1,10 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+numpy>=1.26
+pytest>=8.0
+
+httpx>=0.27          # tests (FastAPI TestClient)
+
+# LLM: no package needed, Gemini is called over REST. Put GEMINI_API_KEY in .env.
+# Optional
+# brainflow>=5.12     # real hardware path (EEG_SOURCE=brainflow)

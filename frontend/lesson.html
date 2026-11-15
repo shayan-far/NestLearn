@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NestLearn · Lesson</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('nl-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/style.css?v=3">
+</head>
+<body>
+  <!-- start + calibration -->
+  <div class="overlay" id="overlay">
+    <div class="card">
+      <div id="startForm">
+        <span class="eyebrow" id="ovSubject">Before we start</span>
+        <h2 id="ovTitle">Loading lesson…</h2>
+        <p class="muted" id="ovDesc"></p>
+        <input type="text" id="user" placeholder="Your name" autocomplete="off" maxlength="40">
+        <label class="consent">
+          <input type="checkbox" id="consent">
+          <span>I consent to EEG-derived signals (not raw brain data) being used to adapt this lesson and logged for my instructor.</span>
+        </label>
+        <div class="row"><button class="primary" id="startBtn">Start lesson</button>
+          <span class="spacer"></span><a class="small" href="/">Back to library</a></div>
+      </div>
+      <div id="calib" hidden style="text-align:center">
+        <div class="breath">
+          <svg viewBox="0 0 150 150"><circle class="track" cx="75" cy="75" r="70"/>
+            <circle class="ring" id="ring" cx="75" cy="75" r="70" stroke-dasharray="439.8" stroke-dashoffset="439.8"/></svg>
+          <div class="core"></div>
+          <video id="cam" autoplay muted playsinline hidden></video>
+        </div>
+        <h2>Calibrating to you</h2>
+        <p class="muted" id="calibHint">Relax, breathe with the circle, and look at the screen.</p>
+        <p class="tiny muted" id="camNote" hidden>Your camera is only shown here, on your own screen. Nothing is recorded or sent, and it turns off when calibration ends.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <main class="reader">
+      <div class="lesson-head">
+        <span class="eyebrow" id="subject"></span>
+        <h1 id="lessonTitle"></h1>
+        <div class="stepper" id="stepper"></div>
+      </div>
+      <section id="lesson"></section>
+    </main>
+  </div>
+
+  <!-- hideable debug pane -->
+  <aside class="pane" id="pane" aria-label="Debug panel">
+    <div class="pane-head">
+      <span class="title">Debug</span><span class="badge" id="modeBadge">–</span>
+      <span class="spacer"></span><kbd>D</kbd>
+      <button class="icon-btn ghost" id="paneClose" aria-label="Close debug panel"></button>
+    </div>
+    <div class="pane-body">
+      <div class="sec">
+        <h3>Live state <span class="spacer"></span><span class="badge" id="stateBadge">waiting</span></h3>
+        <div class="row" style="align-items:baseline"><span class="big-num" id="confNum">0.00</span>
+          <span class="muted small">confusion confidence · threshold 0.65</span></div>
+        <div class="meter" style="margin-top:10px"><i id="confBar"></i></div>
+        <canvas class="spark" id="spark" width="700" height="140"></canvas>
+      </div>
+      <div class="sec">
+        <h3>Input signal <span class="spacer"></span><span class="badge" id="eegBadge">8 ch</span></h3>
+        <canvas class="eeg" id="eeg" width="700" height="420"></canvas>
+        <p class="tiny muted" style="margin:6px 0 0">Live headset input, last 6 s. Shown here only, never stored.</p>
+      </div>
+      <div class="sec">
+        <h3>Features (z vs. your baseline)</h3>
+        <div id="zrows"></div>
+      </div>
+      <div class="sec" id="simSec" hidden>
+        <h3>Simulator</h3>
+        <p class="muted small" style="margin:0 0 8px">No headset? Force a state for 10 s.</p>
+        <div class="sim-grid">
+          <button data-sim="neutral">Neutral</button><button data-sim="confused">Confused</button>
+          <button data-sim="aha">Aha</button><button data-sim="bored">Bored</button>
+        </div>
+      </div>
+      <div class="sec">
+        <h3>Explainer <span class="spacer"></span><span class="badge" id="llmBadge">–</span></h3>
+        <p class="small muted" id="lastExpl" style="margin:0 0 8px">No explanation requested yet.</p>
+        <div class="ctx" id="ctxText">Compressed learner context appears here when an explanation is generated.</div>
+      </div>
+      <div class="sec">
+        <h3>Concept Delta Memory</h3>
+        <p class="small" id="memUpdate" style="margin:0 0 8px"><span class="muted">Waiting for the first confusion or aha.</span></p>
+        <div id="memProtos"></div>
+      </div>
+      <div class="sec">
+        <h3>NestTrace log</h3>
+        <div class="stat-grid">
+          <div class="stat"><div class="v" id="lgBytes">0 B</div><div class="l">written</div></div>
+          <div class="stat"><div class="v" id="lgRatio">–</div><div class="l">ticks per keyframe</div></div>
+          <div class="stat"><div class="v" id="lgEvents">0</div><div class="l">events · transitions</div></div>
+          <div class="stat"><div class="v" id="lgTol">x1</div><div class="l">tolerance (budget)</div></div>
+        </div>
+        <div class="meter" style="margin:12px 0 10px"><i id="lgBudget"></i></div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="toasts" id="toasts"></div>
+  <script src="/common.js?v=3"></script>
+  <script src="/lesson.js?v=3"></script>
+</body>
+</html>

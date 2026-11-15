@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NestLearn · Instructor view</title>
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem('nl-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="/style.css?v=3">
+</head>
+<body>
+  <main class="page">
+    <div class="dash-head reveal">
+      <div>
+        <span class="eyebrow">Instructor view</span>
+        <h1 id="title">Loading…</h1>
+        <div class="muted small" id="meta"></div>
+      </div>
+      <span class="spacer"></span>
+      <div class="tabs" id="tabs"></div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <section class="card panel reveal">
+      <div class="panel-head"><h3>Where students get stuck, and where it clicks</h3></div>
+      <p class="small muted" style="margin:0 0 8px">Per part: share of students with a confusion onset, share with an aha, and the average share of time spent confused (from NestTrace segment summaries).</p>
+      <div class="seg-row head"><span>Part</span><span>Confused</span><span>Aha</span><span>Time confused</span></div>
+      <div id="rows"></div>
+    </section>
+
+    <div class="cols">
+      <section class="card panel reveal">
+        <div class="panel-head"><h3>Needs a rewrite</h3></div>
+        <div id="top"></div>
+      </section>
+      <section class="card panel reveal">
+        <div class="panel-head"><h3>What explanation styles work</h3></div>
+        <p class="small muted" style="margin:0 0 10px">How often an aha followed each kind of alternative explanation.</p>
+        <div id="mods"></div>
+      </section>
+    </div>
+
+    <div class="cols wide-right">
+      <section class="card panel reveal">
+        <div class="panel-head"><h3>Sessions</h3><span class="spacer"></span><span class="tiny muted" id="sessCount"></span></div>
+        <div class="sess-list" id="sessions"></div>
+      </section>
+      <section class="card panel reveal" id="detail">
+        <div class="empty">Pick a session to see its timeline, confusion episodes and learner profile.</div>
+      </section>
+    </div>
+  </main>
+  <script src="/common.js?v=3"></script>
+  <script src="/dashboard.js?v=3"></script>
+</body>
+</html>

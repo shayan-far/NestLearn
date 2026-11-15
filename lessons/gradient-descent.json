@@ -1,0 +1,70 @@
+{
+  "title": "How neural networks learn: gradient descent",
+  "segments": [
+    {
+      "id": "s1",
+      "title": "What are we trying to do?",
+      "body": "A neural network is a function with adjustable numbers called parameters. Training means finding parameter values that make its predictions good.\n\nThe whole game is: measure how wrong the network is, then nudge the parameters to be a little less wrong. Repeat thousands of times.",
+      "alternatives": {
+        "rephrase": "Training = tweak the knobs until the answers stop being bad. Each pass: check the error, adjust the knobs slightly.",
+        "analogy": "Think of tuning a guitar by ear. You pluck, hear it's off, turn the peg a little, and pluck again until it sounds right.",
+        "example": "Predicting house prices: start with random parameters, predict $50k for a $400k house, see the error is huge, adjust, and the next guess is closer."
+      },
+      "sim_difficulty": 0.1
+    },
+    {
+      "id": "s2",
+      "title": "The loss function",
+      "body": "To nudge parameters sensibly we need one number that says how wrong the network is. That number is the loss. Lower is better.\n\nA common choice for predicting numbers is mean squared error: square each mistake, then average them. Squaring makes big mistakes count much more than small ones.",
+      "alternatives": {
+        "rephrase": "The loss is a score for how bad the predictions are. Zero loss would mean perfect predictions.",
+        "analogy": "It's like a golf score: you want it as low as possible, and every extra stroke (mistake) adds to it.",
+        "example": "Predictions are 2 and 6, truth is 3 and 3. Mistakes are -1 and 3. Squared: 1 and 9. Average: 5. The loss is 5."
+      },
+      "quiz": {
+        "question": "Why does mean squared error square the mistakes?",
+        "options": ["So errors cancel out", "So big mistakes count more than small ones", "To make the number negative"],
+        "answer": 1
+      },
+      "sim_difficulty": 0.35
+    },
+    {
+      "id": "s3",
+      "title": "The gradient",
+      "body": "The gradient tells you, for each parameter, how the loss changes if you increase that parameter slightly. It is a list of slopes, one per parameter.\n\nIf the slope is positive, increasing the parameter increases the loss, so we should decrease it. The gradient points uphill, so we step in the opposite direction.",
+      "alternatives": {
+        "rephrase": "For every knob, the gradient says 'turn this up and the error goes up (or down) by this much'. We turn each knob the opposite way to the slope.",
+        "analogy": "You're on a foggy hillside and want to reach the valley. You feel the ground with your feet to find which way slopes down, then step that way. The gradient is that feeling of slope.",
+        "example": "Loss = (w - 3)^2. At w = 5 the slope is 2(5 - 3) = 4, positive, so decrease w. At w = 1 the slope is -4, negative, so increase w. Either way you move toward 3."
+      },
+      "sim_difficulty": 0.85
+    },
+    {
+      "id": "s4",
+      "title": "The learning rate",
+      "body": "Each update is: new parameter = old parameter - learning rate x gradient. The learning rate controls how big a step we take.\n\nToo small and training crawls. Too large and we overshoot the valley and bounce around or even blow up.",
+      "alternatives": {
+        "rephrase": "The learning rate is the step size. Small steps are safe but slow, big steps are fast but can leap right over the best spot.",
+        "analogy": "Walking down to the valley: baby steps take forever, but giant leaps might carry you over the valley and up the other side.",
+        "example": "With loss (w - 3)^2 and w = 5: learning rate 0.1 gives w = 4.6, a gentle move. Learning rate 1.1 gives w = 0.6, overshooting 3 by a lot."
+      },
+      "quiz": {
+        "question": "What happens if the learning rate is far too large?",
+        "options": ["Training is slow but stable", "Updates may overshoot and the loss can blow up", "The gradient becomes zero"],
+        "answer": 1
+      },
+      "sim_difficulty": 0.5
+    },
+    {
+      "id": "s5",
+      "title": "Why training sometimes struggles",
+      "body": "The loss surface of a real network is bumpy, with many dips and flat regions. Gradient descent only sees the slope right where it stands, so it can settle in a shallow dip or crawl across a plateau.\n\nIn practice, noise from small batches of data and tricks like momentum help it keep moving.",
+      "alternatives": {
+        "rephrase": "The real error landscape isn't one smooth bowl. Our method only feels the slope underfoot, so it can get stuck or go slowly on flat ground.",
+        "analogy": "Rolling a marble across a rumpled blanket: it may settle in a small fold instead of the deepest valley, and it barely moves on flat patches.",
+        "example": "Imagine two valleys, one shallow and one deep. A marble that starts near the shallow one rolls in and stays, even though a better spot exists nearby."
+      },
+      "sim_difficulty": 0.65
+    }
+  ]
+}
